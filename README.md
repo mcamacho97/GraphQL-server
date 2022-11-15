@@ -1,2 +1,2 @@
 # GraphQL-server
-Creating a server GraphQL
+Creating a GraphQL server
