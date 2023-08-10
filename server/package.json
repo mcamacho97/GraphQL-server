@@ -1,18 +1,17 @@
 {
-  "name": "graphql-server",
+  "name": "graphql-project",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Mauricio Camacho",
   "license": "ISC",
   "dependencies": {
-    "@apollo/server": "^4.1.1",
-    "graphql": "^16.6.0",
-    "uuid": "^9.0.0"
+    "express": "^4.18.2",
+    "express-graphql": "^0.12.0",
+    "graphql": "^16.7.1",
+    "lodash": "^4.17.21"
   }
 }
