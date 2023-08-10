@@ -6,6 +6,7 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLSchema,
+  GraphQLList,
 } = graphql;
 
 //dummy data
@@ -18,17 +19,34 @@ let userData = [
 ];
 
 let hobbiesData = [
-  { id: "1", title: "programming", description: "Using the computers" },
-  { id: "2", title: "rowing", description: "rowing description" },
-  { id: "3", title: "swimming", description: "swimming description" },
-  { id: "4", title: "fencing", description: "fencing description" },
-  { id: "5", title: "hiking", description: "hiking description" },
+  {
+    id: "1",
+    title: "programming",
+    description: "Using the computers",
+    userId: "1",
+  },
+  { id: "2", title: "rowing", description: "rowing description", userId: "1" },
+  {
+    id: "3",
+    title: "swimming",
+    description: "swimming description",
+    userId: "2",
+  },
+  {
+    id: "4",
+    title: "fencing",
+    description: "fencing description",
+    userId: "4",
+  },
+  { id: "5", title: "hiking", description: "hiking description", userId: "3" },
 ];
 
 let postData = [
-  { id: "1", comment: "Buildin a mind" },
-  { id: "2", comment: "GraphQL is Amazing" },
-  { id: "3", comment: "How to change the World" },
+  { id: "1", comment: "Buildin a mind", userId: "1" },
+  { id: "2", comment: "GraphQL is Amazing", userId: "4" },
+  { id: "2", comment: "GraphQL is Amazing", userId: "2" },
+  { id: "3", comment: "How to change the World", userId: "3" },
+  { id: "3", comment: "How to change the World", userId: "1" },
 ];
 
 // Create types
@@ -41,6 +59,18 @@ const UserType = new GraphQLObjectType({
     name: { type: GraphQLString },
     age: { type: GraphQLInt },
     profession: { type: GraphQLString },
+    posts: {
+      type: new GraphQLList(PostType),
+      resolve(parent, args) {
+        return _.filter(postData, { userId: parent.id });
+      },
+    },
+    hobbies: {
+      type: new GraphQLList(HobbyType),
+      resolve(parent, args) {
+        return _.filter(hobbiesData, { userId: parent.id });
+      },
+    },
   }),
 });
 
@@ -51,6 +81,12 @@ const HobbyType = new GraphQLObjectType({
     id: { type: GraphQLID },
     title: { type: GraphQLString },
     description: { type: GraphQLString },
+    user: {
+      type: UserType,
+      resolve(parent, args) {
+        return _.find(userData, { id: parent.userId });
+      },
+    },
   }),
 });
 
@@ -61,6 +97,12 @@ const PostType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLID },
     comment: { type: GraphQLString },
+    user: {
+      type: UserType,
+      resolve(parent, args) {
+        return _.find(userData, { id: parent.userId });
+      },
+    },
   }),
 });
 
